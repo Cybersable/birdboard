@@ -18,12 +18,12 @@ class ProjectsController extends Controller
 
     public function create()
     {
-        //
+        return view('projects.create');
     }
 
     public function store(ProjectsStoreRequest $request)
     {
-        Project::create($request->validated());
+        auth()->user()->projects()->create($request->validated());
         return redirect('/projects');
     }
 

@@ -17,4 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/projects', \App\Http\Controllers\ProjectsController::class);
+
+Route::resource('projects', \App\Http\Controllers\ProjectsController::class)->middleware('auth');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
