@@ -34,7 +34,12 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button class="btn btn-sm btn-primary" type="submit"> {{ __('Save') }}</button>
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                    {{ __('Save') }}
+                                </button>
+                                <a href="{{ route('projects.index') }}" class="btn btn-link">
+                                    {{ __('Cancel') }}
+                                </a>
                             </div>
                         </form>
                     </div>
