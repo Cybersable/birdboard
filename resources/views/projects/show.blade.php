@@ -11,7 +11,7 @@
                         <li class="breadcrumb-item active" aria-current="page">{{ $project->title }}</li>
                     </ol>
                 </nav>
-                <a href="{{ route('projects.create') }}" class="btn btn-primary ml-3">
+                <a href="{{ route('projects.tasks.create', $project) }}" class="btn btn-primary ml-3">
                     {{ __('Add Task') }}
                 </a>
             </div>
@@ -26,23 +26,17 @@
         <div class="col-lg-8">
             <div class="mb-4">
                 <h2>
-                    Tasks
+                    {{ __('Tasks') }}
                 </h2>
-                <div class="card mb-3">
-                    <div class="card-body">
-                        This is some text within a card body.
+                @forelse($project->tasks as $task)
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            {{ $task->title }}
+                        </div>
                     </div>
-                </div>
-                <div class="card mb-3 border-primary">
-                    <div class="card-body">
-                        This is some text within a card body.
-                    </div>
-                </div>
-                <div class="card mb-3 border-danger">
-                    <div class="card-body">
-                        This is some text within a card body.
-                    </div>
-                </div>
+                @empty
+                    No tasks yet.
+                @endforelse
             </div>
             <div class="mb-4">
                 <h2>

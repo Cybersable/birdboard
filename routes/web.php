@@ -10,5 +10,6 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::resource('projects', \App\Http\Controllers\ProjectsController::class)->middleware('auth');
+    Route::resource('projects', \App\Http\Controllers\ProjectsController::class);
+    Route::resource('projects.tasks', \App\Http\Controllers\TaskController::class);
 });
