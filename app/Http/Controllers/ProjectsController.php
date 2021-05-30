@@ -12,7 +12,7 @@ class ProjectsController extends Controller
 
     public function index(): View
     {
-        $projects = Project::where('owner_id', auth()->id())->get();
+        $projects = auth()->user()->projects()->latest('updated_at')->get();
         return view('projects.index', compact('projects'));
     }
 
