@@ -14,6 +14,9 @@ class TaskController extends Controller
 
     public function store(TaskStoreController $request, Project $project)
     {
+        if (auth()->user()->isNot($project->owner)) {
+            abort(403);
+        }
         $project->tasks()->create($request->validated());
         return redirect()->route('projects.show', $project);
     }

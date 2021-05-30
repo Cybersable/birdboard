@@ -4,12 +4,31 @@ namespace Tests\Feature;
 
 use App\Models\Project;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Task;
 
 class ProjectTasksTest extends TestCase
 {
-    use InteractsWithDatabase;
+    use InteractsWithDatabase, WithFaker;
+
+    public function test_guest_cant_manage_tasks()
+    {
+        $task = Task::factory()->create();
+
+        $this->get(route('projects.tasks.create', $task->project))->assertRedirect('/login');
+        $this->post(route('projects.tasks.store', ['title' => $task->title, $task->project]))
+            ->assertRedirect('/login');
+    }
+
+    public function test_only_owner_the_project_can_create_task()
+    {
+        $this->signIn();
+
+        $project = Project::factory()->create();
+        $this->post(route('projects.tasks.store', ['title' => $this->faker->sentence, $project]))
+             ->assertStatus(403);
+    }
 
     public function test_a_user_can_create_task_and_view_it()
     {

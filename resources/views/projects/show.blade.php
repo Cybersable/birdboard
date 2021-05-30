@@ -35,8 +35,18 @@
                         </div>
                     </div>
                 @empty
-                    No tasks yet.
+                    <p>
+                        No tasks yet.
+                    </p>
                 @endforelse
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <form action="{{ route('projects.tasks.store', $project) }}" method="POST">
+                            @csrf
+                            <input type="text" class="form-control" name="title" placeholder="{{ __('Add new task') }}">
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="mb-4">
                 <h2>
