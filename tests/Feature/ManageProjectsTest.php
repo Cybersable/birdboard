@@ -28,14 +28,46 @@ class ManageProjectsTest extends TestCase
         $this->signIn();
         $attributes = [
             'title' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph(),
+            'description' => $this->faker->sentence(),
+            'notes' => 'General notes',
             'owner_id' => auth()->id()
         ];
 
         $response = $this->post(route('projects.store', $attributes));
-        $response->assertRedirect(route('projects.show', Project::where($attributes)->first()));
+        $project = Project::where($attributes)->first();
+
+        $response->assertRedirect(route('projects.show', $project));
         $this->assertDatabaseHas('projects', $attributes);
-        $this->get('/projects')->assertSee($attributes['title']);
+        $this->get(route('projects.show', $project))
+            ->assertSee($attributes['title'])
+            ->assertSee($attributes['notes'])
+            ->assertSee($attributes['description']);
+    }
+
+    public function test_only_project_owner_can_update_a_project()
+    {
+        $this->signIn();
+        $project = Project::factory()->create();
+        $attr = Project::factory()->raw();
+        $this->patch(route('projects.update', array_merge($attr, [$project])))
+             ->assertStatus(403);
+        $this->assertDatabaseMissing('projects', $attr);
+    }
+
+    public function test_a_user_can_update_a_project()
+    {
+        $this->signIn();
+        $project = Project::factory()->create(['owner_id' => auth()->id()]);
+        $attr = Project::factory()->raw(['owner_id' => auth()->id()]);
+        $this->patch(route('projects.update', array_merge($attr, [$project])))
+             ->assertRedirect(route('projects.show', $project));
+        $this->assertDatabaseHas('projects', $attr);
+        $this->get(route('projects.show', $project))
+             ->assertSee([
+                $attr['title'],
+                $attr['notes'],
+                $attr['description']
+             ]);
     }
 
     public function test_a_user_can_view_their_project()

@@ -79,7 +79,18 @@
                 <h2>
                     General Notes
                 </h2>
-                <textarea class="w-100 p-3" rows="10">This is some text within a card body.</textarea>
+                <form action="{{ route('projects.update', $project) }}" method="POST">
+                    @method('PATCH')
+                    @csrf
+                    <textarea
+                        class="w-100 p-3 mb-3"
+                        rows="10"
+                        name="notes"
+                    >{{ $project->notes }}</textarea>
+                    <button class="btn btn-primary">
+                        Save
+                    </button>
+                </form>
             </div>
         </div>
         <div class="col-lg-4">

@@ -11,23 +11,20 @@ class ProjectTaskController extends Controller
 {
     public function create(Project $project)
     {
+        $this->authorize('update', $project);
         return view('projects.tasks.create', compact('project'));
     }
 
     public function store(ProjectTaskStoreRequest $request, Project $project)
     {
-        if (auth()->user()->isNot($project->owner)) {
-            abort(403);
-        }
+        $this->authorize('update', $project);
         $project->tasks()->create($request->validated());
         return redirect()->route('projects.show', $project);
     }
 
     public function update(ProjectTaskUpdateRequest $request, Project $project, Task $task)
     {
-        if (auth()->user()->isNot($project->owner)) {
-            abort(403);
-        }
+        $this->authorize('update', $project);
         $task->update($request->validated());
         return redirect()->route('projects.show', $project);
     }
