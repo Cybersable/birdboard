@@ -31,7 +31,30 @@
                 @forelse($project->tasks as $task)
                     <div class="card mb-3">
                         <div class="card-body">
-                            {{ $task->title }}
+                            <form
+                                action="{{ route('projects.tasks.update', [$project, $task]) }}"
+                                method="POST"
+                            >
+                                @csrf
+                                @method('PATCH')
+                                <div class="d-flex">
+                                    <input
+                                        type="text"
+                                        class="form-control border-0 mr-3 {{ $task->completed ? 'text-black-50' : '' }}"
+                                        value="{{ $task->title }}"
+                                        name="title"
+                                        placeholder="{{ __('Task title') }}"
+                                    >
+                                    <div class="input-group-text">
+                                        <input
+                                            type="checkbox"
+                                            name="completed"
+                                            onchange="this.form.submit()"
+                                            {{ $task->completed ? 'checked' : ''}}
+                                        >
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 @empty
@@ -43,7 +66,11 @@
                     <div class="card-body">
                         <form action="{{ route('projects.tasks.store', $project) }}" method="POST">
                             @csrf
-                            <input type="text" class="form-control" name="title" placeholder="{{ __('Add new task') }}">
+                            <input
+                                type="text"
+                                class="form-control border-0"
+                                name="title"
+                                placeholder="{{ __('Add new task...') }}">
                         </form>
                     </div>
                 </div>

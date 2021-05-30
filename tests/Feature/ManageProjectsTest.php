@@ -32,7 +32,8 @@ class ManageProjectsTest extends TestCase
             'owner_id' => auth()->id()
         ];
 
-        $this->post('/projects', $attributes)->assertRedirect('/projects');
+        $response = $this->post(route('projects.store', $attributes));
+        $response->assertRedirect(route('projects.show', Project::where($attributes)->first()));
         $this->assertDatabaseHas('projects', $attributes);
         $this->get('/projects')->assertSee($attributes['title']);
     }

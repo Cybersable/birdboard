@@ -23,8 +23,8 @@ class ProjectsController extends Controller
 
     public function store(ProjectsStoreRequest $request)
     {
-        auth()->user()->projects()->create($request->validated());
-        return redirect('/projects');
+        $project = auth()->user()->projects()->create($request->validated());
+        return redirect()->route('projects.show', compact('project'));
     }
 
     public function show(Project $project)
