@@ -25,11 +25,25 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label for="title">{{ __('Title') }}</label>
-                                            <input value="{{ $project->title }}" class="form-control" name="title" type="text" placeholder="{{ __('Project title') }}">
+                                            <input
+                                                value="{{ $project->title }}"
+                                                class="form-control"
+                                                name="title"
+                                                type="text"
+                                                placeholder="{{ __('Project title') }}"
+                                                required
+                                            >
                                         </div>
                                         <div class="form-group">
                                             <label for="description">{{ __('Description') }}</label>
-                                            <input value="{{ $project->description }}" class="form-control" name="description" type="text" placeholder="{{ __('Project description') }}">
+                                            <input
+                                                value="{{ $project->description }}"
+                                                class="form-control"
+                                                name="description"
+                                                type="text"
+                                                placeholder="{{ __('Project description') }}"
+                                                required
+                                            >
                                         </div>
                                     </div>
                                 </div>

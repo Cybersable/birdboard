@@ -28,11 +28,9 @@ class ProjectsController extends Controller
         return redirect()->route('projects.show', compact('project'));
     }
 
-    public function update(ProjectUpdateRequest $request, Project $project)
+    public function update(ProjectUpdateRequest $request)
     {
-        $this->authorize('update', $project);
-        $project->update($request->validated());
-        return redirect()->route('projects.show', $project);
+        return redirect()->route('projects.show', $request->save());
     }
 
     public function show(Project $project)
