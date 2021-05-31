@@ -11,8 +11,8 @@
                         <li class="breadcrumb-item active" aria-current="page">{{ $project->title }}</li>
                     </ol>
                 </nav>
-                <a href="{{ route('projects.tasks.create', $project) }}" class="btn btn-primary ml-3">
-                    {{ __('Add Task') }}
+                <a href="{{ route('projects.edit', $project) }}" class="btn btn-primary ml-3">
+                    {{ __('Edit Project') }}
                 </a>
             </div>
         </div>

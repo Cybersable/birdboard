@@ -18,6 +18,7 @@ class ManageProjectsTest extends TestCase
 
         $this->get('/projects')->assertRedirect('/login');
         $this->get('/projects/create')->assertRedirect('/login');
+        $this->get('/projects/edit')->assertRedirect('/login');
         $this->get($project->path())->assertRedirect('/login');
         $this->post('/projects', $project->toArray())->assertRedirect('login');
     }

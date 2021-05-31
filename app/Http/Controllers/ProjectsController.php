@@ -41,9 +41,9 @@ class ProjectsController extends Controller
         return view('projects.show', compact('project'));
     }
 
-    public function edit($id)
+    public function edit(Project $project)
     {
-        //
+        return view('projects.edit', compact('project'));
     }
 
     public function destroy($id)
