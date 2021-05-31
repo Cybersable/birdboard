@@ -2,19 +2,15 @@
 
 namespace Tests\Unit;
 
-use App\Models\Project;
-use App\Models\Task;
-use App\Models\User;
+use App\Models\{Project, Task, User};
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
-    use RefreshDatabase, InteractsWithDatabase, WithFaker;
+    use InteractsWithDatabase, WithFaker;
 
     public function test_it_has_a_path()
     {

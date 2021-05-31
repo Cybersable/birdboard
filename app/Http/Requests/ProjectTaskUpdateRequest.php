@@ -19,7 +19,7 @@ class ProjectTaskUpdateRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'completed' => isset($this->completed)
+            'completed' => isset($this->completed) && $this->completed
         ]);
     }
 

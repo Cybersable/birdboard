@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Project;
-use App\Models\User;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Facades\Tests\Setup\ProjectFactory;
 use Tests\TestCase;
 
 class ManageProjectsTest extends TestCase
@@ -24,24 +24,18 @@ class ManageProjectsTest extends TestCase
 
     public function test_a_user_can_create_a_project()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
-        $attributes = [
-            'title' => $this->faker->sentence(),
-            'description' => $this->faker->sentence(),
-            'notes' => 'General notes',
-            'owner_id' => auth()->id()
-        ];
+        $attr = Project::factory()->raw(['owner_id' => auth()->id()]);
 
-        $response = $this->post(route('projects.store', $attributes));
-        $project = Project::where($attributes)->first();
+        $response = $this->post(route('projects.store', $attr));
 
+        $project = Project::where($attr)->first();
         $response->assertRedirect(route('projects.show', $project));
-        $this->assertDatabaseHas('projects', $attributes);
+
         $this->get(route('projects.show', $project))
-            ->assertSee($attributes['title'])
-            ->assertSee($attributes['notes'])
-            ->assertSee($attributes['description']);
+            ->assertSee($attr['title'])
+            ->assertSee($attr['notes'])
+            ->assertSee($attr['description']);
     }
 
     public function test_only_project_owner_can_update_a_project()
@@ -56,10 +50,10 @@ class ManageProjectsTest extends TestCase
 
     public function test_a_user_can_update_a_project()
     {
-        $this->signIn();
-        $project = Project::factory()->create(['owner_id' => auth()->id()]);
-        $attr = Project::factory()->raw(['owner_id' => auth()->id()]);
-        $this->patch(route('projects.update', array_merge($attr, [$project])))
+        $project = ProjectFactory::create();
+        $attr = Project::factory()->raw(['owner_id' => $project->owner]);
+        $this->actingAs($project->owner)
+             ->patch(route('projects.update', array_merge($attr, [$project])))
              ->assertRedirect(route('projects.show', $project));
         $this->assertDatabaseHas('projects', $attr);
         $this->get(route('projects.show', $project))
@@ -72,15 +66,16 @@ class ManageProjectsTest extends TestCase
 
     public function test_a_user_can_view_their_project()
     {
-        $this->signIn();
-        $project = Project::factory()->create(['owner_id' => auth()->id()]);
-        $this->get(route('projects.show', $project))->assertStatus(200);
+        $project = ProjectFactory::create();
+        $this
+            ->actingAs($project->owner)
+            ->get(route('projects.show', $project))->assertStatus(200);
     }
 
     public function test_an_auth_users_cant_view_others_projects()
     {
         $this->signIn();
-        $project = Project::factory()->create(['owner_id' => User::factory()->create()->id]);
+        $project = Project::factory()->create();
         $this->get(route('projects.show', $project))->assertStatus(403);
     }
 
