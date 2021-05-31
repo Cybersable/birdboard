@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
+use App\Models\Activity;
 use App\Models\Project;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -48,4 +49,5 @@ class ProjectsController extends Controller
     {
         //
     }
+
 }
