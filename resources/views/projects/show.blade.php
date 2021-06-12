@@ -94,7 +94,12 @@
             </div>
         </div>
         <div class="col-lg-4">
-            @include('projects.card')
+            <div class="mb-3">
+                @include('projects.card')
+            </div>
+
+            @include('projects.activity.card')
+
         </div>
     </div>
 @endsection
