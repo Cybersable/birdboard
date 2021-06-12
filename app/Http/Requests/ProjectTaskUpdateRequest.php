@@ -31,8 +31,8 @@ class ProjectTaskUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'string'],
-            'completed' => ['required', 'boolean']
+            'title' => ['sometimes', 'string'],
+            'completed' => ['sometimes', 'boolean']
         ];
     }
 }
