@@ -1,1 +1,1 @@
-You updated task
+{{ $activity->user->name }} updated task
