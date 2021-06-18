@@ -14,7 +14,7 @@ class ProjectsController extends Controller
 
     public function index(): View
     {
-        $projects = auth()->user()->projects()->latest('updated_at')->get();
+        $projects = auth()->user()->accessibleProjects()->latest('updated_at')->get();
         return view('projects.index', compact('projects'));
     }
 
