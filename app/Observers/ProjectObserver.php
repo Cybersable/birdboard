@@ -9,17 +9,17 @@ class ProjectObserver
 
     public function created(Project $project)
     {
-        $project->recordActivity('created');
+//        $project->recordActivity('created');
     }
 
     public function updated(Project $project)
     {
-        $project->recordActivity('updated');
+//        $project->recordActivity('updated');
     }
 
-    public function updating(Project $project)
-    {
-        $project->old = $project->getOriginal();
-    }
+//    public function updating(Project $project)
+//    {
+//        $project->old = $project->getOriginal();
+//    }
 
 }

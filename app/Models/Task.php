@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Services\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
 
     protected $fillable = [
         'title',
@@ -33,16 +34,4 @@ class Task extends Model
         $this->update(['completed' => false]);
     }
 
-    public function activity()
-    {
-        return $this->morphMany(Activity::class, 'subject')->latest();
-    }
-
-    public function recordActivity($description)
-    {
-        $this->activity()->create([
-            'description' => $description,
-            'project_id' => $this->project_id
-        ]);
-    }
 }

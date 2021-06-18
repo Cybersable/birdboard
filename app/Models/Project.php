@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Services\RecordsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 
 class Project extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
 
     protected $fillable = [
         'title',
@@ -17,7 +17,10 @@ class Project extends Model
         'owner_id'
     ];
 
-    public $old = [];
+    protected static $recordableEvents = [
+        'created',
+        'updated'
+    ];
 
     public function path()
     {
@@ -39,23 +42,4 @@ class Project extends Model
         return $this->hasMany(Activity::class)->latest();
     }
 
-    public function recordActivity($description)
-    {
-        $this->activity()->create([
-            'description' => $description,
-            'changes' => $this->activityChanges($description)
-        ]);
-    }
-
-    protected function activityChanges($description)
-    {
-        if ($description === 'updated') {
-            return [
-                'before' => Arr::except(array_diff($this->old, $this->getAttributes()), ['updated_at']),
-                'after' => Arr::except($this->getChanges(), ['updated_at'])
-            ];
-        }
-
-        return null;
-    }
 }
