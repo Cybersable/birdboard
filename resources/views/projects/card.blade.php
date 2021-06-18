@@ -7,4 +7,11 @@
         <p class="card-text">{{ Illuminate\Support\Str::limit($project->description, 100) }}</p>
         <a href="{{ route('projects.show', $project) }}" class="btn btn-primary">{{ __('Open') }}</a>
     </div>
+    <div class="card-footer">
+        <form method="POST" action="{{ route('projects.destroy', $project) }}" class="text-right w-100">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+    </div>
 </div>
