@@ -17,6 +17,10 @@
             </div>
         </div>
         <div class="col-lg-4 d-flex justify-content-end align-items-center">
+            @foreach($project->members as $member)
+                <img src="{{ gravatar_url($member->email) }}" alt="{{ $member->name }}`s avatar" class="rounded-circle mr-2" style="width: 30px">
+            @endforeach
+                <img src="{{ gravatar_url($project->owner->email) }}" alt="{{ $project->owner->name }}`s avatar" class="rounded-circle mr-2" style="width: 30px">
             <a href="{{ route('projects.create') }}" class="btn btn-primary ml-3">
                 {{ __('Invite to Project') }}
             </a>
