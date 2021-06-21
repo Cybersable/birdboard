@@ -19,10 +19,17 @@ class InvitationsTest extends TestCase
         $project = ProjectFactory::create();
         $user = User::factory()->create();
 
-        $this->actingAs($user)
-             ->post(route('projects.invitations.index', [$project]))
-             ->assertStatus(403);
+        $assertInvitationForbidden = function () use ($user, $project) {
+            $this->actingAs($user)
+                ->post(route('projects.invitations.index', [$project]))
+                ->assertStatus(403);
+        };
 
+        $assertInvitationForbidden();
+
+        $project->invite($user);
+
+        $assertInvitationForbidden();
     }
 
     public function test_project_can_invite_a_user()
@@ -43,10 +50,10 @@ class InvitationsTest extends TestCase
         $project = ProjectFactory::create();
 
         $this->actingAs($project->owner)
-            ->post(route('projects.invitations.store', [ 'email' => 'notauser@example.com', $project ]))
+            ->post(route('projects.invitations.store', [ 'email' => 'notausser@example.com', $project ]))
             ->assertSessionHasErrors([
                 'email' => 'The user you are inviting must be have a Birdboard account.'
-            ]);
+            ], null, 'invitations');
     }
 
     public function test_invited_users_may_update_project_details()

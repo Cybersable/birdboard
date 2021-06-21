@@ -95,6 +95,7 @@
                         Save
                     </button>
                 </form>
+                @include('errors')
             </div>
         </div>
         <div class="col-lg-4">
@@ -102,7 +103,15 @@
                 @include('projects.card')
             </div>
 
-            @include('projects.activity.card')
+            <div class="mb-3">
+                @include('projects.activity.card')
+            </div>
+
+            @can('manage', $project)
+                <div class="mb-3">
+                    @include('projects.invite')
+                </div>
+            @endcan
 
         </div>
     </div>
