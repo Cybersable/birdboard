@@ -99,6 +99,7 @@ class ManageProjectsTest extends TestCase
 
     public function test_a_user_can_view_their_project()
     {
+        $this->withoutExceptionHandling();
         $project = ProjectFactory::create();
         $this
             ->actingAs($project->owner)
