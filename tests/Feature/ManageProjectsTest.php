@@ -26,14 +26,9 @@ class ManageProjectsTest extends TestCase
     public function test_a_user_can_create_a_project()
     {
         $this->signIn();
-        $attr = Project::factory()->raw(['owner_id' => auth()->id()]);
 
-        $response = $this->post(route('projects.store', $attr));
-
-        $project = Project::where($attr)->first();
-        $response->assertRedirect(route('projects.show', $project));
-
-        $this->get(route('projects.show', $project))
+        $response = $this->followingRedirects()
+            ->post(route('projects.store', $attr = Project::factory()->raw()))
             ->assertSee($attr['title'])
             ->assertSee($attr['notes'])
             ->assertSee($attr['description']);
@@ -46,10 +41,16 @@ class ManageProjectsTest extends TestCase
         $this->delete(route('projects.destroy', $project))
              ->assertRedirect(route('login'));
 
-        $this->signIn();
+        $user = $this->signIn();
 
         $this->delete(route('projects.destroy', $project))
              ->assertStatus(403);
+
+        $project->invite($user);
+
+        $this->actingAs($user)
+            ->delete(route('projects.destroy', $project))
+            ->assertStatus(403);
     }
 
     public function test_a_user_can_see_all_projects_they_have_been_invited_to_their_dashboard()
